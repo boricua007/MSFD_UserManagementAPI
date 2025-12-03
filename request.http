@@ -1,0 +1,138 @@
+@MSFD_UserManagementAPI_HostAddress = http://localhost:5098
+
+###
+# GET: Get all users
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+
+###
+# GET: Get all active users
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users?isActive=true
+Accept: application/json
+
+###
+# GET: Get all inactive users
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users?isActive=false
+Accept: application/json
+
+###
+# GET: Get user by ID (existing user)
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users/1
+Accept: application/json
+
+###
+# GET: Get user by ID (non-existing user)
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users/999
+Accept: application/json
+
+###
+# POST: Create a new user
+POST {{MSFD_UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Wilson",
+  "email": "alice.wilson@example.com",
+  "phoneNumber": "555-0104"
+}
+
+###
+# POST: Create user with duplicate email (should fail)
+POST {{MSFD_UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "john.doe@example.com",
+  "phoneNumber": "555-9999"
+}
+
+###
+# POST: Create user with invalid data (should fail)
+POST {{MSFD_UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "A",
+  "lastName": "",
+  "email": "invalid-email",
+  "phoneNumber": "not-a-phone"
+}
+
+###
+# PUT: Update existing user
+PUT {{MSFD_UserManagementAPI_HostAddress}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith-Updated",
+  "email": "jane.smith.updated@example.com",
+  "phoneNumber": "555-0199",
+  "isActive": true
+}
+
+###
+# PUT: Update user with duplicate email (should fail)
+PUT {{MSFD_UserManagementAPI_HostAddress}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "john.doe@example.com",
+  "phoneNumber": "555-0102",
+  "isActive": true
+}
+
+###
+# PUT: Update non-existing user (should fail)
+PUT {{MSFD_UserManagementAPI_HostAddress}}/api/users/999
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Non",
+  "lastName": "Existing",
+  "email": "nonexisting@example.com",
+  "phoneNumber": "555-0000",
+  "isActive": true
+}
+
+###
+# PUT: Deactivate user
+PUT {{MSFD_UserManagementAPI_HostAddress}}/api/users/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Bob",
+  "lastName": "Johnson",
+  "email": "bob.johnson@example.com",
+  "phoneNumber": "555-0103",
+  "isActive": false
+}
+
+###
+# DELETE: Delete existing user
+DELETE {{MSFD_UserManagementAPI_HostAddress}}/api/users/3
+Accept: application/json
+
+###
+# DELETE: Delete non-existing user (should fail)
+DELETE {{MSFD_UserManagementAPI_HostAddress}}/api/users/999
+Accept: application/json
+
+###
+# Verify deletion - try to get deleted user
+GET {{MSFD_UserManagementAPI_HostAddress}}/api/users/3
+Accept: application/json
+
+###
