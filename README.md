@@ -34,15 +34,21 @@
 
 ## Usage Examples
 
-### Get All Users (with pagination and search)
+### Get All Users
 ```http
-GET http://localhost:5098/api/users?page=1&pageSize=5&search=john&sortBy=firstName&sortOrder=asc
+GET http://localhost:5099/api/users
+Accept: application/json
+```
+
+### Get Users with Pagination and Search
+```http
+GET http://localhost:5099/api/users?page=1&pageSize=5&search=john&sortBy=firstName&sortOrder=asc
 Accept: application/json
 ```
 
 ### Create New User
 ```http
-POST http://localhost:5098/api/users
+POST http://localhost:5099/api/users
 Content-Type: application/json
 
 {
@@ -55,7 +61,7 @@ Content-Type: application/json
 
 ### Update User
 ```http
-PUT http://localhost:5098/api/users/1
+PUT http://localhost:5099/api/users/1
 Content-Type: application/json
 
 {
@@ -92,7 +98,7 @@ MSFD_UserManagementAPI/
 3. **Restore dependencies:** `dotnet restore`
 4. **Build the application:** `dotnet build`
 5. **Run the application:** `dotnet run`
-6. **Access Swagger UI:** http://localhost:5098/swagger
+6. **Access Swagger UI:** http://localhost:5099/swagger
 7. **Test the API:**
    - Use the `request.http` file in VS Code with REST Client extension
    - Or use the interactive Swagger UI for testing
@@ -106,7 +112,7 @@ MSFD_UserManagementAPI/
    - Update user information
    - Delete users and verify removal
 3. **Explore API Documentation:**
-   - Open Swagger UI at http://localhost:5098/swagger
+   - Open Swagger UI at http://localhost:5099/swagger
    - Review OpenAPI specification
    - Test endpoints directly from the browser
 
