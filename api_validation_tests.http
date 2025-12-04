@@ -1,0 +1,96 @@
+### Test 1: Get all users (should work)
+GET http://localhost:5098/api/users
+
+###
+
+### Test 2: Get user by valid ID (should work)
+GET http://localhost:5098/api/users/1
+
+###
+
+### Test 3: Get user by invalid ID (should return 404)
+GET http://localhost:5098/api/users/999
+
+###
+
+### Test 4: Create user with valid data (should work)
+POST http://localhost:5098/api/users
+Content-Type: application/json
+
+{
+    "firstName": "Test",
+    "lastName": "User",
+    "email": "test@example.com",
+    "phoneNumber": "555-1234"
+}
+
+###
+
+### Test 5: Create user with missing required fields (should fail validation)
+POST http://localhost:5098/api/users
+Content-Type: application/json
+
+{
+    "firstName": "",
+    "lastName": "",
+    "email": "invalid-email"
+}
+
+###
+
+### Test 6: Create user with invalid email (should fail validation)
+POST http://localhost:5098/api/users
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "not-an-email",
+    "phoneNumber": "555-1234"
+}
+
+###
+
+### Test 7: Create user with null/empty body (should crash or fail)
+POST http://localhost:5098/api/users
+Content-Type: application/json
+
+{}
+
+###
+
+### Test 8: Update user with valid data
+PUT http://localhost:5098/api/users/1
+Content-Type: application/json
+
+{
+    "firstName": "Updated",
+    "lastName": "Name",
+    "email": "updated@example.com",
+    "phoneNumber": "555-9999",
+    "isActive": true
+}
+
+###
+
+### Test 9: Update non-existent user (should return 404)
+PUT http://localhost:5098/api/users/999
+Content-Type: application/json
+
+{
+    "firstName": "Updated",
+    "lastName": "Name",
+    "email": "updated@example.com",
+    "phoneNumber": "555-9999",
+    "isActive": true
+}
+
+###
+
+### Test 10: Delete user
+DELETE http://localhost:5098/api/users/2
+
+###
+
+### Test 11: Delete non-existent user (should return 404)
+DELETE http://localhost:5098/api/users/999

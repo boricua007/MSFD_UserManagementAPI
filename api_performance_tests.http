@@ -1,0 +1,74 @@
+### Performance Tests for GET /users endpoint
+
+### Test 1: Basic pagination (default)
+GET http://localhost:5099/api/users
+
+###
+
+### Test 2: Pagination - First page with 5 users
+GET http://localhost:5099/api/users?page=1&pageSize=5
+
+###
+
+### Test 3: Pagination - Second page
+GET http://localhost:5099/api/users?page=2&pageSize=2
+
+###
+
+### Test 4: Search by first name
+GET http://localhost:5099/api/users?search=john
+
+###
+
+### Test 5: Search by email
+GET http://localhost:5099/api/users?search=example.com
+
+###
+
+### Test 6: Filter active users only
+GET http://localhost:5099/api/users?isActive=true
+
+###
+
+### Test 7: Sort by first name ascending
+GET http://localhost:5099/api/users?sortBy=firstName&sortOrder=asc
+
+###
+
+### Test 8: Sort by email descending
+GET http://localhost:5099/api/users?sortBy=email&sortOrder=desc
+
+###
+
+### Test 9: Sort by date created (newest first)
+GET http://localhost:5099/api/users?sortBy=dateCreated&sortOrder=desc
+
+###
+
+### Test 10: Complex query - Search + Filter + Sort + Pagination
+GET http://localhost:5099/api/users?search=doe&isActive=true&sortBy=firstName&sortOrder=asc&page=1&pageSize=5
+
+###
+
+### Test 11: Cache test - Same request (should be faster second time)
+GET http://localhost:5099/api/users?page=1&pageSize=3
+
+###
+
+### Test 12: Invalid page size (should return 400)
+GET http://localhost:5099/api/users?pageSize=200
+
+###
+
+### Test 13: Invalid sort field (should return 400)
+GET http://localhost:5099/api/users?sortBy=invalidField
+
+###
+
+### Test 14: Case-insensitive search
+GET http://localhost:5099/api/users?search=JOHN
+
+###
+
+### Test 15: Empty search (should return all users paginated)
+GET http://localhost:5099/api/users?search=&page=1&pageSize=10
