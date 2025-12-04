@@ -78,20 +78,20 @@ Content-Type: application/json
 ```
 MSFD_UserManagementAPI/
 ├── Controllers/
-│   └── UsersController.cs                            # CRUD operations controller with caching
+│   └── UsersController.cs                    # CRUD operations controller with caching
 ├── Models/
-│   ├── User.cs                                              # User entity model
+│   ├── User.cs                               # User entity model
 │   └── UserQueryParameters.cs                # Query parameters for pagination/search
-├── API-tests/                                                # API testing suite
-│   ├── api_validation_tests.http                # Validation test scenarios
+├── API-tests/                                # API testing suite
+│   ├── api_validation_tests.http             # Validation test scenarios
 │   ├── api_validation_tests_documentation.md
-│   ├── api_performance_tests.http          # Performance test scenarios
+│   ├── api_performance_tests.http            # Performance test scenarios
 │   └── api_performance_tests_documentation.md
-├── Program.cs                                             # Application configuration with caching
-├── request.http                                           # Basic HTTP test requests
-├── appsettings.json                                    # Application settings
-├── MSFD_UserManagementAPI.csproj    # Project configuration
-└── README.md                                          # This file
+├── Program.cs                                # Application configuration with caching
+├── request.http                              # Basic HTTP test requests
+├── appsettings.json                          # Application settings
+├── MSFD_UserManagementAPI.csproj             # Project configuration
+└── README.md                                 # This file
 ```
 
 ## Getting Started
