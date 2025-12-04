@@ -144,4 +144,4 @@ MSFD_UserManagementAPI/
 
 ---
 
-This Web API application demonstrates RESTful API design, CRUD operations, and OpenAPI documentation - essential skills for back-end developers building scalable web APIs.
+*This Web API application demonstrates RESTful API design, CRUD operations, and OpenAPI documentation - essential skills for back-end software developers building scalable web APIs.*
