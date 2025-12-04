@@ -6,27 +6,37 @@
 
 ✅ **Complete CRUD Operations** - Create, Read, Update, and Delete users with validation  
 ✅ **OpenAPI/Swagger Integration** - Interactive API documentation and testing  
-✅ **Data Validation** - Input validation with detailed error responses  
+✅ **Advanced Data Validation** - Input validation with detailed error responses and sanitization  
+✅ **Performance Optimization** - Pagination, search, sorting, and memory caching  
+✅ **Error Handling** - Comprehensive exception handling with proper HTTP status codes  
 ✅ **RESTful Design** - Standard HTTP methods and status codes  
 ✅ **In-Memory Storage** - Simple data persistence for demonstration  
 
-**Tech Stack:** .NET 9.0 • C# • ASP.NET Core • Swagger/OpenAPI
+**Tech Stack:** .NET 9.0 • C# • ASP.NET Core • Swagger/OpenAPI • Memory Caching
 
 ## API Endpoints
 
 | Method | Endpoint | Description | Response |
 |--------|----------|-------------|----------|
-| GET | `/api/users` | Get all users | 200 |
+| GET | `/api/users` | Get all users (with pagination, search, sort) | 200 |
 | GET | `/api/users/{id}` | Get user by ID | 200, 404 |
 | POST | `/api/users` | Create new user | 201, 400 |
 | PUT | `/api/users/{id}` | Update existing user | 200, 400, 404 |
 | DELETE | `/api/users/{id}` | Delete user | 204, 404 |
 
+### Query Parameters for GET /api/users
+- `page` - Page number (default: 1)
+- `pageSize` - Items per page (default: 10, max: 100)
+- `search` - Search in firstName, lastName, email
+- `sortBy` - Sort by: firstName, lastName, email, dateCreated
+- `sortOrder` - Sort order: asc, desc
+- `isActive` - Filter by active status
+
 ## Usage Examples
 
-### Get All Users
+### Get All Users (with pagination and search)
 ```http
-GET http://localhost:5098/api/users
+GET http://localhost:5098/api/users?page=1&pageSize=5&search=john&sortBy=firstName&sortOrder=asc
 Accept: application/json
 ```
 
@@ -62,11 +72,14 @@ Content-Type: application/json
 ```
 MSFD_UserManagementAPI/
 ├── Controllers/
-│   └── UsersController.cs          # CRUD operations controller
+│   └── UsersController.cs          # CRUD operations controller with caching
 ├── Models/
-│   └── User.cs                     # User entity model
-├── Program.cs                      # Application configuration
+│   ├── User.cs                     # User entity model
+│   └── UserQueryParameters.cs     # Query parameters for pagination/search
+├── Program.cs                      # Application configuration with caching
 ├── request.http                    # HTTP test requests
+├── api_validation_tests.http       # Validation test suite
+├── api_performance_tests.http      # Performance test suite
 ├── appsettings.json               # Application settings
 ├── MSFD_UserManagementAPI.csproj  # Project configuration
 └── README.md                      # This file
