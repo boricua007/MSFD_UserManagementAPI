@@ -1,0 +1,183 @@
+@baseUrl = http://localhost:5098
+@validToken = dev-token-12345
+@invalidToken = invalid-token-xyz
+
+###############################################################################
+# MIDDLEWARE TESTING SUITE
+# Tests: Logging, Error Handling, and Authentication Middleware
+###############################################################################
+
+###
+# TEST 1: Missing Authentication Token (Should Return 401)
+# Expected: 401 Unauthorized with JSON error response
+# Validates: Authentication middleware blocks unauthenticated requests
+GET {{baseUrl}}/api/users
+Accept: application/json
+
+###
+# TEST 2: Invalid Authentication Token (Should Return 401)
+# Expected: 401 Unauthorized - Invalid or expired token
+# Validates: Authentication middleware validates token correctly
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{invalidToken}}
+Accept: application/json
+
+###
+# TEST 3: Valid Authentication Token (Should Return 200)
+# Expected: 200 OK with user list
+# Validates: Authentication middleware allows valid tokens
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 4: Valid Token with X-API-Token Header (Should Return 200)
+# Expected: 200 OK with user list
+# Validates: Authentication middleware accepts X-API-Token header
+GET {{baseUrl}}/api/users
+X-API-Token: {{validToken}}
+Accept: application/json
+
+###
+# TEST 5: Get Non-Existent User (Should Return 404)
+# Expected: 404 Not Found with standardized error response
+# Validates: Error handling middleware formats 404 errors correctly
+GET {{baseUrl}}/api/users/999
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 6: Create User with Valid Data (Should Return 201)
+# Expected: 201 Created with new user object
+# Validates: Logging middleware logs POST requests with body
+POST {{baseUrl}}/api/users
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "test.middleware@example.com",
+  "phoneNumber": "555-0200"
+}
+
+###
+# TEST 7: Create User with Invalid Data (Should Return 400)
+# Expected: 400 Bad Request with validation errors
+# Validates: Error handling middleware catches validation exceptions
+POST {{baseUrl}}/api/users
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+  "firstName": "A",
+  "lastName": "",
+  "email": "invalid-email",
+  "phoneNumber": "not-a-phone"
+}
+
+###
+# TEST 8: Update User with Valid Data (Should Return 200/204)
+# Expected: Success response
+# Validates: Logging middleware logs PUT requests
+PUT {{baseUrl}}/api/users/1
+Authorization: Bearer {{validToken}}
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe-Updated",
+  "email": "john.doe.updated@example.com",
+  "phoneNumber": "555-0199",
+  "isActive": true
+}
+
+###
+# TEST 9: Delete User (Should Return 204)
+# Expected: 204 No Content
+# Validates: Logging middleware logs DELETE requests
+DELETE {{baseUrl}}/api/users/3
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 10: Public Endpoint - Get Auth Info (Should Return 200 Without Token)
+# Expected: 200 OK without authentication
+# Validates: Authentication middleware allows public paths
+GET {{baseUrl}}/api/auth/info
+Accept: application/json
+
+###
+# TEST 11: Validate Token Endpoint (Should Return 200 with User Info)
+# Expected: 200 OK with authenticated user details
+# Validates: Token validation and user claims
+GET {{baseUrl}}/api/auth/validate
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 12: Filter Active Users (Should Return 200)
+# Expected: 200 OK with filtered results
+# Validates: Logging middleware logs query parameters
+GET {{baseUrl}}/api/users?isActive=true
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 13: Filter Inactive Users (Should Return 200)
+# Expected: 200 OK with filtered results
+# Validates: Query parameter handling and logging
+GET {{baseUrl}}/api/users?isActive=false
+Authorization: Bearer {{validToken}}
+Accept: application/json
+
+###
+# TEST 14: Access Swagger (Public - Should Return 200)
+# Expected: 200 OK - Swagger UI
+# Validates: Swagger is exempt from authentication
+GET {{baseUrl}}/swagger/index.html
+Accept: text/html
+
+###############################################################################
+# EXPECTED MIDDLEWARE BEHAVIOR
+###############################################################################
+# 
+# 1. ERROR HANDLING MIDDLEWARE:
+#    - Catches all unhandled exceptions
+#    - Returns standardized JSON error responses
+#    - Logs errors with unique error IDs
+#    - Includes detailed error info in Development environment
+#
+# 2. AUTHENTICATION MIDDLEWARE:
+#    - Validates Bearer tokens and X-API-Token headers
+#    - Blocks requests without valid tokens (401)
+#    - Allows public paths (swagger, /api/auth/info)
+#    - Adds user claims to HttpContext
+#
+# 3. LOGGING MIDDLEWARE:
+#    - Logs all incoming requests (method, path, headers)
+#    - Logs all outgoing responses (status code, duration)
+#    - Assigns unique request IDs for tracking
+#    - Logs request/response bodies at Debug level
+#
+###############################################################################
+
+###############################################################################
+# VALIDATION CHECKLIST
+###############################################################################
+# 
+# After running tests, verify in the application logs:
+# 
+# ✓ Each request has a unique Request ID
+# ✓ Request method (GET, POST, PUT, DELETE) is logged
+# ✓ Request path is logged
+# ✓ Response status code is logged (200, 201, 400, 401, 404, etc.)
+# ✓ Request duration in milliseconds is logged
+# ✓ Authentication failures are logged with warnings
+# ✓ Successful authentications log user ID
+# ✓ Error responses follow consistent JSON format
+# ✓ 401 responses for missing/invalid tokens
+# ✓ Public endpoints accessible without authentication
+# ✓ All errors return proper HTTP status codes
+# 
+###############################################################################
